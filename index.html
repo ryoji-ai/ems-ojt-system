@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="救急隊員向けOJT教育システム - 日常的な教育訓練を支援するWebアプリケーション">
+    <meta name="theme-color" content="#c41e3a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="救急OJT">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+    <title>救急OJT教育システム</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="app">
+        <!-- ヘッダー -->
+        <header class="header">
+            <button id="back-btn" class="back-btn hidden" aria-label="戻る">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+            </button>
+            <h1 id="header-title">救急OJT教育システム</h1>
+            <button id="home-btn" class="home-btn hidden" aria-label="ホームに戻る">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                    <polyline points="9 22 9 12 15 12 15 22"/>
+                </svg>
+            </button>
+        </header>
+
+        <!-- メインコンテンツ -->
+        <main class="main-content">
+            <!-- トップ画面 -->
+            <section id="top-screen" class="screen active">
+                <div class="top-logo">
+                    <div class="logo-icon">
+                        <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+                            <circle cx="32" cy="32" r="30" fill="#c41e3a"/>
+                            <path d="M32 16v32M16 32h32" stroke="white" stroke-width="6" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <p class="subtitle">総社市消防本部</p>
+                </div>
+
+                <button id="random-btn" class="random-btn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/>
+                    </svg>
+                    ランダム出題
+                </button>
+
+                <div class="category-grid" id="category-grid">
+                    <!-- カテゴリカードがJSで挿入される -->
+                </div>
+            </section>
+
+            <!-- サブカテゴリ選択画面 -->
+            <section id="subcategory-screen" class="screen">
+                <h2 id="category-title" class="section-title"></h2>
+                <div class="subcategory-list" id="subcategory-list">
+                    <!-- サブカテゴリがJSで挿入される -->
+                </div>
+            </section>
+
+            <!-- 質問表示画面 -->
+            <section id="question-screen" class="screen">
+                <div class="question-header">
+                    <span id="question-category" class="question-category"></span>
+                    <span id="question-type" class="question-type"></span>
+                </div>
+
+                <div class="question-card">
+                    <h3 id="question-topic" class="question-topic"></h3>
+                    <p id="question-text" class="question-text"></p>
+                </div>
+
+                <div class="check-points-container">
+                    <button id="toggle-checkpoints" class="toggle-btn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 18l6-6-6-6"/>
+                        </svg>
+                        確認ポイントを表示
+                    </button>
+                    <div id="check-points" class="check-points hidden">
+                        <ul id="check-points-list"></ul>
+                        <div id="tips" class="tips"></div>
+                    </div>
+                </div>
+
+                <div class="question-actions">
+                    <button id="next-question-btn" class="action-btn primary">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                        次の質問
+                    </button>
+                    <button id="change-category-btn" class="action-btn secondary">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="7" height="7"/>
+                            <rect x="14" y="3" width="7" height="7"/>
+                            <rect x="3" y="14" width="7" height="7"/>
+                            <rect x="14" y="14" width="7" height="7"/>
+                        </svg>
+                        別のカテゴリへ
+                    </button>
+                    <a id="record-btn" class="action-btn record" href="#" target="_blank" rel="noopener noreferrer">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                            <polyline points="14 2 14 8 20 8"/>
+                            <line x1="16" y1="13" x2="8" y2="13"/>
+                            <line x1="16" y1="17" x2="8" y2="17"/>
+                        </svg>
+                        記録する
+                    </a>
+                </div>
+            </section>
+        </main>
+
+        <!-- フッター -->
+        <footer class="footer">
+            <p>&copy; 2024 総社市消防本部 救急OJT教育システム</p>
+        </footer>
+    </div>
+
+    <!-- オフライン通知 -->
+    <div id="offline-notice" class="offline-notice hidden">
+        オフラインモードで動作中
+    </div>
+
+    <script src="js/questions-data.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
