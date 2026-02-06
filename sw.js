@@ -3,14 +3,14 @@
  * オフライン対応とキャッシュ管理
  */
 
-const CACHE_NAME = 'ems-ojt-v1';
+const CACHE_NAME = 'ems-ojt-v2';
 const CACHE_URLS = [
-    '/',
-    '/index.html',
-    '/css/style.css',
-    '/js/app.js',
-    '/js/questions-data.js',
-    '/manifest.json'
+    '/ems-ojt-system/',
+    '/ems-ojt-system/index.html',
+    '/ems-ojt-system/css/style.css',
+    '/ems-ojt-system/js/app.js',
+    '/ems-ojt-system/js/questions-data.js',
+    '/ems-ojt-system/manifest.json'
 ];
 
 // インストール時にキャッシュ
@@ -106,7 +106,7 @@ self.addEventListener('fetch', (event) => {
 
                         // オフライン用のフォールバックページがあれば返す
                         if (event.request.mode === 'navigate') {
-                            return caches.match('/index.html');
+                            return caches.match('/ems-ojt-system/index.html');
                         }
 
                         throw error;

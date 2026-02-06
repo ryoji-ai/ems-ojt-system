@@ -2,12 +2,12 @@
   "name": "救急OJT教育システム",
   "short_name": "救急OJT",
   "description": "救急隊員向けOJT教育を支援するWebアプリケーション",
-  "start_url": "/",
+  "start_url": "/ems-ojt-system/",
   "display": "standalone",
   "background_color": "#f5f6fa",
   "theme_color": "#c41e3a",
   "orientation": "portrait-primary",
-  "scope": "/",
+  "scope": "/ems-ojt-system/",
   "lang": "ja",
   "icons": [
     {
@@ -65,7 +65,7 @@
       "name": "ランダム出題",
       "short_name": "ランダム",
       "description": "全カテゴリからランダムに問題を出題",
-      "url": "/?mode=random",
+      "url": "/ems-ojt-system/?mode=random",
       "icons": [
         {
           "src": "icons/icon-96.png",
