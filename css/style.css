@@ -191,6 +191,18 @@ body {
     transition: var(--transition-smooth);
 }
 
+.hero-image {
+    margin-bottom: 0.75rem;
+}
+
+.hero-image img {
+    max-width: 280px;
+    width: 70%;
+    height: auto;
+    border-radius: var(--radius-lg);
+    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.1));
+}
+
 .subtitle {
     color: var(--text-secondary);
     font-size: 0.95rem;
