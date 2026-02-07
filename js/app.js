@@ -80,12 +80,35 @@ function renderCategories() {
 
     elements.categoryGrid.innerHTML = html;
 
+    // 統計情報を表示
+    const totalStats = document.getElementById('total-stats');
+    if (totalStats) {
+        const totalQuestions = state.questions.categories.reduce(
+            (sum, cat) => sum + cat.subcategories.reduce(
+                (s, sub) => s + sub.questions.length, 0
+            ), 0
+        );
+        const totalCategories = state.questions.categories.length;
+        totalStats.textContent = `${totalCategories} カテゴリ / ${totalQuestions} 問`;
+    }
+
     // イベントリスナーを追加
     elements.categoryGrid.querySelectorAll('.category-card').forEach(card => {
         card.addEventListener('click', () => {
             const categoryId = card.dataset.categoryId;
             selectCategory(categoryId);
         });
+    });
+
+    // スタッガーアニメーション
+    elements.categoryGrid.querySelectorAll('.category-card').forEach((card, index) => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(12px)';
+        setTimeout(() => {
+            card.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+        }, index * 60);
     });
 }
 
@@ -222,6 +245,14 @@ function showQuestion() {
         elements.tips.style.display = 'block';
     } else {
         elements.tips.style.display = 'none';
+    }
+
+    // 質問カウンターを更新
+    const counterEl = document.getElementById('question-counter');
+    if (counterEl) {
+        const current = state.currentQuestionIndex + 1;
+        const total = state.shuffledQuestions.length;
+        counterEl.textContent = `${current} / ${total}`;
     }
 
     // 記録ボタンのURLを設定

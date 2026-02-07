@@ -3,7 +3,7 @@
  * オフライン対応とキャッシュ管理
  */
 
-const CACHE_NAME = 'ems-ojt-v3';
+const CACHE_NAME = 'ems-ojt-v4';
 const CACHE_URLS = [
     '/ems-ojt-system/',
     '/ems-ojt-system/index.html',

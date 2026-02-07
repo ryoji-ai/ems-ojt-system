@@ -5,7 +5,7 @@
   "start_url": "/ems-ojt-system/",
   "display": "standalone",
   "background_color": "#f5f6fa",
-  "theme_color": "#c41e3a",
+  "theme_color": "#1a365d",
   "orientation": "portrait-primary",
   "scope": "/ems-ojt-system/",
   "lang": "ja",
