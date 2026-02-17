@@ -38,7 +38,8 @@ const elements = {
     nextQuestionBtn: document.getElementById('next-question-btn'),
     changeCategoryBtn: document.getElementById('change-category-btn'),
     recordBtn: document.getElementById('record-btn'),
-    offlineNotice: document.getElementById('offline-notice')
+    offlineNotice: document.getElementById('offline-notice'),
+    monthlyGoals: document.getElementById('monthly-goals')
 };
 
 /**
@@ -303,6 +304,72 @@ function toggleCheckPoints() {
 }
 
 /**
+ * 今月の訓練目標を表示する
+ */
+function renderMonthlyGoals() {
+    if (typeof MONTHLY_GOALS === 'undefined' || !elements.monthlyGoals) return;
+
+    const now = new Date();
+    const yearMonth = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+    const monthData = MONTHLY_GOALS[yearMonth];
+
+    if (!monthData || !monthData.goals || monthData.goals.length === 0) {
+        elements.monthlyGoals.classList.add('hidden');
+        return;
+    }
+
+    const monthLabel = `${now.getMonth() + 1}月`;
+    const formUrl = monthData.formUrl || GOOGLE_FORM_URL;
+
+    const goalsHtml = monthData.goals.map(goal => `
+        <div class="monthly-goal-item">
+            <div class="monthly-goal-marker"></div>
+            <div class="monthly-goal-content">
+                <div class="monthly-goal-title">${goal.title}</div>
+                <div class="monthly-goal-desc">${goal.description}</div>
+            </div>
+        </div>
+    `).join('');
+
+    elements.monthlyGoals.innerHTML = `
+        <div class="monthly-goals-header">
+            <div class="monthly-goals-icon-wrap">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/>
+                    <circle cx="12" cy="12" r="6"/>
+                    <circle cx="12" cy="12" r="2"/>
+                </svg>
+            </div>
+            <div class="monthly-goals-title-group">
+                <h2 class="monthly-goals-title">今月の訓練目標</h2>
+                <span class="monthly-goals-month">${monthLabel}</span>
+            </div>
+        </div>
+        <div class="monthly-goals-list">
+            ${goalsHtml}
+        </div>
+        <a href="${formUrl}" target="_blank" rel="noopener noreferrer" class="monthly-goals-record-btn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 11l3 3L22 4"/>
+                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+            </svg>
+            訓練を記録する
+        </a>
+    `;
+
+    elements.monthlyGoals.classList.remove('hidden');
+
+    // 出現アニメーション
+    elements.monthlyGoals.style.opacity = '0';
+    elements.monthlyGoals.style.transform = 'translateY(12px)';
+    setTimeout(() => {
+        elements.monthlyGoals.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+        elements.monthlyGoals.style.opacity = '1';
+        elements.monthlyGoals.style.transform = 'translateY(0)';
+    }, 100);
+}
+
+/**
  * 画面を切り替える
  */
 function showScreen(screenName) {
@@ -488,6 +555,7 @@ function setupEventListeners() {
  */
 function init() {
     loadQuestions();
+    renderMonthlyGoals();
     setupEventListeners();
     setupOfflineListener();
     registerServiceWorker();
