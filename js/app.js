@@ -81,18 +81,6 @@ function renderCategories() {
 
     elements.categoryGrid.innerHTML = html;
 
-    // 統計情報を表示
-    const totalStats = document.getElementById('total-stats');
-    if (totalStats) {
-        const totalQuestions = state.questions.categories.reduce(
-            (sum, cat) => sum + cat.subcategories.reduce(
-                (s, sub) => s + sub.questions.length, 0
-            ), 0
-        );
-        const totalCategories = state.questions.categories.length;
-        totalStats.textContent = `${totalCategories} カテゴリ / ${totalQuestions} 問`;
-    }
-
     // イベントリスナーを追加
     elements.categoryGrid.querySelectorAll('.category-card').forEach(card => {
         card.addEventListener('click', () => {
