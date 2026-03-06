@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="令和8年度 4月 月例訓練 進行ページ - 救急OJT教育システム">
+    <meta name="theme-color" content="#1a365d">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>4月 月例訓練 - 救急OJT教育システム</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* monthly-training.html 専用の追加スタイル */
+        body {
+            min-height: 100vh;
+        }
+
+        .mt-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        /* ヘッダーはstyle.cssのものを再利用し、静的ページ用に調整 */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.875rem 1rem;
+        }
+
+        .header h1 {
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- ヘッダー -->
+    <header class="header">
+        <a href="index.html" class="back-btn" aria-label="ホームに戻る" style="text-decoration:none; margin-right: auto;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                <polyline points="9 22 9 12 15 12 15 22"/>
+            </svg>
+        </a>
+        <h1>救急OJT教育システム</h1>
+        <div style="width: 40px; margin-left: auto;"></div>
+    </header>
+
+    <main class="mt-container">
+
+        <!-- 月・テーマ表示 -->
+        <div class="training-header-section">
+            <div class="training-year-label">令和8年度</div>
+            <div class="training-title">4月 月例訓練</div>
+            <div class="training-theme"><strong>テーマ：</strong>基本手技の習熟（年度初め基礎確認）</div>
+        </div>
+
+        <!-- 進捗バー -->
+        <div class="progress-bar-wrap">
+            <div class="progress-bar-label">
+                <span id="progress-label">STEP 1 / 4</span>
+                <span id="progress-pct">25%</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-bar-fill" id="progress-fill" style="width: 25%;"></div>
+            </div>
+        </div>
+
+        <!-- ステップインジケーター -->
+        <div class="step-indicator">
+            <div class="step-dot-wrap active" id="dot-wrap-0">
+                <div class="step-dot active" id="dot-0" onclick="goToStep(0)">1</div>
+                <div class="step-dot-label">集合・面談</div>
+            </div>
+            <div class="step-connector" id="connector-0"></div>
+            <div class="step-dot-wrap" id="dot-wrap-1">
+                <div class="step-dot" id="dot-1" onclick="goToStep(1)">2</div>
+                <div class="step-dot-label">安全研修</div>
+            </div>
+            <div class="step-connector" id="connector-1"></div>
+            <div class="step-dot-wrap" id="dot-wrap-2">
+                <div class="step-dot" id="dot-2" onclick="goToStep(2)">3</div>
+                <div class="step-dot-label">資器材実技</div>
+            </div>
+            <div class="step-connector" id="connector-2"></div>
+            <div class="step-dot-wrap" id="dot-wrap-3">
+                <div class="step-dot" id="dot-3" onclick="goToStep(3)">4</div>
+                <div class="step-dot-label">評価・OJT</div>
+            </div>
+        </div>
+
+        <!-- ステップカード (JS で表示切替) -->
+        <div id="step-cards"></div>
+
+        <!-- ナビゲーション -->
+        <div class="step-nav">
+            <button class="step-nav-btn prev" id="prev-btn" onclick="prevStep()" disabled>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                前へ
+            </button>
+            <button class="step-nav-btn next" id="next-btn" onclick="nextStep()">
+                次へ
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+            </button>
+        </div>
+
+        <!-- 訓練記録ボタン（最終ステップのみ表示） -->
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeBCU5BZg7by-3sUljJFsmqI_dT8Qh2jL5alhSlzY7H2QLkDA/viewform"
+           class="training-record-btn"
+           id="record-btn"
+           target="_blank"
+           rel="noopener noreferrer"
+           style="display:none;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/>
+                <line x1="16" y1="13" x2="8" y2="13"/>
+                <line x1="16" y1="17" x2="8" y2="17"/>
+            </svg>
+            📝 訓練を記録する → Google Form
+        </a>
+
+    </main>
+
+    <!-- フッター -->
+    <footer class="footer">
+        <p>&copy; 2026 総社市消防本部 救急OJT教育システム</p>
+    </footer>
+
+    <script>
+    /**
+     * 4月月例訓練 進行スクリプト
+     */
+
+    // 訓練ステップデータ
+    const STEPS = [
+        {
+            title: '年間教育目標の設定と支援',
+            badge: '個別面談',
+            time: '30分',
+            target: '全救急隊員',
+            contents: [
+                '個人教育目標記録表を配布する',
+                '各隊員と個別面談（1人あたり5分）を実施する',
+                '前年度の実績と課題を振り返り、今年度の目標を設定する',
+                '習熟が必要な分野・手技を特定し、重点目標を決める',
+                '年度末に振り返りを行うことを事前に伝える',
+            ],
+            supplies: ['📋 個人教育目標記録表', '🗂️ 前年度の教育記録'],
+            appLinks: [],
+            checks: [
+                '全員の記録表を受け取り、内容を確認した',
+                '各隊員に個別の助言・アドバイスを行った',
+                '今年度の重点目標を隊員本人と共有した',
+                '年度末振り返りの実施を予告した',
+            ],
+        },
+        {
+            title: '安全管理・危機管理研修',
+            badge: '集合研修',
+            time: '20分',
+            target: '全救急隊員',
+            contents: [
+                '前年度のヒヤリハット・事故事例を全員で振り返る',
+                '感染防止対策（標準予防策）の徹底確認',
+                '個人防護具（PPE）の正しい着脱手順を実演する',
+                '針刺し・血液暴露発生時の報告・対応手順を確認する',
+                '救急活動中の安全管理上の注意点を確認する',
+            ],
+            supplies: ['📋 ヒヤリハット事例資料', '🧤 PPE一式（手袋・マスク・ゴーグル・ガウン）', '📄 感染事故対応フロー'],
+            appLinks: [],
+            checks: [
+                'ヒヤリハット事例を全員で共有した',
+                'PPEの着脱手順を実演・確認した',
+                '感染事故発生時の対応手順を確認した',
+                '出席を記録した',
+            ],
+        },
+        {
+            title: '救急資器材の取扱・感染防止・搬送法',
+            badge: '実技訓練',
+            time: '60分',
+            target: '新任・兼任（現任は指導者として担当）',
+            contents: [
+                '主要救急資器材（モニター・AED・吸引器等）の点検と操作確認',
+                '感染防止を意識したPPE着脱の実践',
+                '担架・スクープ担架の組み立て・操作確認',
+                'バックボード固定の手順確認',
+                '現任隊員が指導者として新任・兼任を評価する',
+            ],
+            supplies: ['🚑 救急資器材一式（モニター・AED・吸引器・携行酸素）', '🛏️ 担架・スクープ担架・バックボード', '🧤 PPE一式', '📋 資器材点検チェックシート'],
+            appLinks: [
+                { href: 'index.html?category=equipment', label: '📱 アプリで資器材・車両問題を開く' },
+            ],
+            checks: [
+                '主要資器材の取扱いを全員確認した',
+                '担架・スクープ担架の操作を実演評価した',
+                'PPE着脱を全員実施・確認した',
+                '各自の点検チェックシートを回収した',
+            ],
+        },
+        {
+            title: '基本的な観察・応急処置のチェックリスト評価',
+            badge: '実技・OJT',
+            time: '60分',
+            target: '全救急隊員',
+            contents: [
+                'バイタルサイン測定（血圧・脈拍・SpO2・呼吸数）の実演評価',
+                '初期評価（A：気道 → B：呼吸 → C：循環 → D：意識）の流れ確認',
+                '気道確保手技（頭部後屈顎先挙上・下顎挙上・エアウェイ挿入）の確認',
+                'BVM換気の手技確認',
+                '傷病者評価の系統的な手順（SAMPLE聴取含む）の確認',
+            ],
+            supplies: ['🩺 バイタル測定資器材（血圧計・パルスオキシメータ等）', '👤 訓練用人形（シミュレーター）', '💨 BVM（バッグバルブマスク）', '📋 評価チェックリスト用紙'],
+            appLinks: [
+                { href: 'index.html?category=basic-technique', label: '📱 アプリで基本手技問題を開く' },
+            ],
+            checks: [
+                'バイタルサイン測定を全員評価した',
+                '初期評価（ABCD）の流れを確認した',
+                '気道確保手技を実演評価した',
+                'BVM換気の手技を確認した',
+                '個別フィードバックを各隊員に実施した',
+            ],
+        },
+    ];
+
+    let currentStep = 0;
+    // 各ステップのチェック状態を保持
+    const checkState = STEPS.map(step => step.checks.map(() => false));
+
+    /**
+     * チェックボックスのトグル
+     */
+    function toggleCheck(stepIndex, checkIndex) {
+        checkState[stepIndex][checkIndex] = !checkState[stepIndex][checkIndex];
+        const item = document.querySelector(
+            `[data-step="${stepIndex}"][data-check="${checkIndex}"]`
+        );
+        if (item) {
+            item.classList.toggle('checked', checkState[stepIndex][checkIndex]);
+        }
+    }
+
+    /**
+     * 1つのステップカードのHTMLを生成
+     */
+    function renderStepCard(index) {
+        const step = STEPS[index];
+        const isLast = index === STEPS.length - 1;
+
+        const contentsHtml = step.contents
+            .map(c => `<li>${c}</li>`)
+            .join('');
+
+        const suppliesHtml = step.supplies
+            .map(s => `<li>${s}</li>`)
+            .join('');
+
+        const appLinksHtml = step.appLinks.map(link => `
+            <a href="${link.href}" class="app-link-btn" target="_self">
+                ${link.label}
+            </a>
+        `).join('');
+
+        const checksHtml = step.checks.map((check, ci) => `
+            <div class="eval-check-item${checkState[index][ci] ? ' checked' : ''}"
+                 data-step="${index}" data-check="${ci}"
+                 onclick="toggleCheck(${index}, ${ci})">
+                <div class="eval-check-box">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                        <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                </div>
+                <span class="eval-check-label">${check}</span>
+            </div>
+        `).join('');
+
+        return `
+            <div class="step-card" id="step-card-${index}">
+                <div class="step-card-header">
+                    <div class="step-card-meta">
+                        <span class="step-label">STEP ${index + 1} / ${STEPS.length}</span>
+                        <span class="step-badge">${step.badge}</span>
+                    </div>
+                    <div class="step-card-title">${step.title}</div>
+                    <div class="step-card-info">
+                        <span class="step-info-item">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                            ${step.time}
+                        </span>
+                        <span class="step-info-item">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                            ${step.target}
+                        </span>
+                    </div>
+                </div>
+                <div class="step-card-body">
+
+                    <div class="step-section">
+                        <div class="step-section-title">実施内容</div>
+                        <ul class="step-content-list">${contentsHtml}</ul>
+                    </div>
+
+                    <div class="step-section">
+                        <div class="step-section-title">準備品</div>
+                        <ul class="supply-list">${suppliesHtml}</ul>
+                    </div>
+
+                    ${step.appLinks.length > 0 ? `
+                    <div class="step-section">
+                        <div class="step-section-title">アプリ連携</div>
+                        ${appLinksHtml}
+                    </div>
+                    ` : ''}
+
+                    <div class="step-section">
+                        <div class="step-section-title">評価チェック（指導者用）</div>
+                        <div class="eval-checklist">${checksHtml}</div>
+                    </div>
+
+                </div>
+            </div>
+        `;
+    }
+
+    /**
+     * 表示を指定ステップに更新
+     */
+    function renderCurrentStep() {
+        const container = document.getElementById('step-cards');
+        container.innerHTML = renderStepCard(currentStep);
+
+        // ドット更新
+        STEPS.forEach((_, i) => {
+            const wrap = document.getElementById(`dot-wrap-${i}`);
+            const dot = document.getElementById(`dot-${i}`);
+            const connector = i < STEPS.length - 1 ? document.getElementById(`connector-${i}`) : null;
+
+            wrap.classList.remove('active', 'completed');
+            dot.classList.remove('active', 'completed');
+
+            if (i < currentStep) {
+                wrap.classList.add('completed');
+                dot.classList.add('completed');
+                dot.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>`;
+                if (connector) connector.classList.add('completed');
+            } else if (i === currentStep) {
+                wrap.classList.add('active');
+                dot.classList.add('active');
+                dot.textContent = i + 1;
+                if (connector) connector.classList.remove('completed');
+            } else {
+                dot.textContent = i + 1;
+                if (connector) connector.classList.remove('completed');
+            }
+        });
+
+        // 進捗バー更新
+        const pct = Math.round(((currentStep + 1) / STEPS.length) * 100);
+        document.getElementById('progress-label').textContent = `STEP ${currentStep + 1} / ${STEPS.length}`;
+        document.getElementById('progress-pct').textContent = `${pct}%`;
+        document.getElementById('progress-fill').style.width = `${pct}%`;
+
+        // ナビボタン更新
+        document.getElementById('prev-btn').disabled = currentStep === 0;
+        const nextBtn = document.getElementById('next-btn');
+        const isLast = currentStep === STEPS.length - 1;
+        if (isLast) {
+            nextBtn.disabled = true;
+            nextBtn.innerHTML = `完了 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>`;
+        } else {
+            nextBtn.disabled = false;
+            nextBtn.innerHTML = `次へ <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>`;
+        }
+
+        // 訓練記録ボタン
+        document.getElementById('record-btn').style.display = isLast ? 'flex' : 'none';
+
+        // 画面トップに戻る
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function prevStep() {
+        if (currentStep > 0) {
+            currentStep--;
+            renderCurrentStep();
+        }
+    }
+
+    function nextStep() {
+        if (currentStep < STEPS.length - 1) {
+            currentStep++;
+            renderCurrentStep();
+        }
+    }
+
+    function goToStep(index) {
+        currentStep = index;
+        renderCurrentStep();
+    }
+
+    // 初期描画
+    renderCurrentStep();
+    </script>
+</body>
+</html>

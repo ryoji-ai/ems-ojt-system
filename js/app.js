@@ -236,12 +236,20 @@ function showQuestion() {
         elements.tips.style.display = 'none';
     }
 
-    // 質問カウンターを更新
+    // 質問カウンター（ビジュアルプログレスバー）を更新
     const counterEl = document.getElementById('question-counter');
     if (counterEl) {
         const current = state.currentQuestionIndex + 1;
         const total = state.shuffledQuestions.length;
-        counterEl.textContent = `${current} / ${total}`;
+        const pct = Math.round((current / total) * 100);
+        counterEl.innerHTML = `
+            <div class="q-progress-wrap">
+                <span class="q-progress-text">${current} / ${total}</span>
+                <div class="q-progress-bar" role="progressbar" aria-valuenow="${current}" aria-valuemin="1" aria-valuemax="${total}" aria-label="質問の進捗">
+                    <div class="q-progress-fill" style="width:${pct}%"></div>
+                </div>
+            </div>
+        `;
     }
 
     // 記録ボタンのURLを設定
@@ -279,6 +287,7 @@ function toggleCheckPoints() {
             </svg>
             確認ポイントを隠す
         `;
+        showToast('✅ 確認ポイントを表示しました');
     } else {
         elements.checkPoints.classList.add('hidden');
         elements.toggleCheckpoints.classList.remove('active');
@@ -454,17 +463,37 @@ function shuffleArray(array) {
 }
 
 /**
- * エラーメッセージを表示
+ * エラーメッセージを表示（エンプティステート）
  */
 function showError(message) {
     elements.categoryGrid.innerHTML = `
-        <div style="grid-column: 1 / -1; text-align: center; padding: 2rem; color: var(--danger-color);">
-            <p>${message}</p>
-            <button onclick="location.reload()" style="margin-top: 1rem; padding: 0.5rem 1rem; cursor: pointer;">
-                再読み込み
-            </button>
+        <div class="empty-state">
+            <div class="empty-state-icon">⚠️</div>
+            <div class="empty-state-title">${message}</div>
+            <button class="empty-state-btn" onclick="location.reload()">再読み込み</button>
         </div>
     `;
+}
+
+/**
+ * トースト通知を表示
+ */
+function showToast(message, duration = 2600) {
+    let container = document.getElementById('toast-container');
+    if (!container) {
+        container = document.createElement('div');
+        container.id = 'toast-container';
+        container.className = 'toast-container';
+        document.body.appendChild(container);
+    }
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.textContent = message;
+    container.appendChild(toast);
+
+    const hideAt = duration - 280;
+    setTimeout(() => toast.classList.add('hiding'), hideAt);
+    setTimeout(() => toast.remove(), duration);
 }
 
 /**
@@ -539,6 +568,19 @@ function setupEventListeners() {
 }
 
 /**
+ * URLパラメータによるカテゴリ直接選択
+ * index.html?category=basic-technique のように指定するとそのカテゴリに遷移する
+ */
+function applyUrlParams() {
+    const params = new URLSearchParams(window.location.search);
+    const targetCategory = params.get('category');
+    if (targetCategory && state.questions) {
+        const cat = state.questions.categories.find(c => c.id === targetCategory);
+        if (cat) selectCategory(targetCategory);
+    }
+}
+
+/**
  * アプリケーションを初期化
  */
 function init() {
@@ -547,6 +589,7 @@ function init() {
     setupEventListeners();
     setupOfflineListener();
     registerServiceWorker();
+    applyUrlParams();
 }
 
 // DOMContentLoadedで初期化
